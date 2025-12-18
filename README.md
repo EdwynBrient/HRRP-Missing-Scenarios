@@ -9,7 +9,7 @@ Executable code lives in `src/ship_hrrp_gen`, configs in `configs/`.
 
 # Top contribution
 
-Although HRRP data are inherently noisy and difficult to interpret, the apparent target length observed in a radar HRRP follows a well-defined geometric relationship with the target’s aspect angle. This relationship is described by the _Line-Of-Sight Projection (LOSP)_ model:
+Although HRRP data are inherently noisy and difficult to interpret, the theoretical target length observed in a radar HRRP follows a well-defined geometric relationship with the target’s aspect angle. This relationship is described by the _Line-Of-Sight Projection (LOSP)_ model:
 
 LOSP(L, W, asp) = |L · cos(asp)| + |W · sin(asp)|
 
