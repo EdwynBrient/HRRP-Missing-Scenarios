@@ -8,7 +8,7 @@ Executable code lives in `src/icassp`, configs in `configs/`.
 ## Quick requirements
 - Python ≥ 3.9
 - PyTorch (CPU or CUDA, matching your GPU if available)
-- The generated demo set (`data/ship_hrrp.pt`) (loaded directly, no CSV needed).
+- The generated demo set (`data/ship_hrrp.pt`).
 
 ## Installation
 ```bash
