@@ -1,7 +1,7 @@
 # ICASSP HRRP Training
 
 Cleaned-up DDPM / GAN training code for HRRP radar profiles.  
-Executable code lives in `src/icassp`, configs in `configs/`.
+Executable code lives in `src/ship_hrrp_gen`, configs in `configs/`.
 
 <img src="assets/ship_hrrp.png" alt="Generated samples overview" />
 
@@ -16,12 +16,12 @@ cd github_repo
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-pip install -e .   # installs the icassp package from src/
+pip install -e .   # installs the ship_hrrp_gen package from src/
 ```
 
 ## Run a training
 ```bash
-python -m icassp.train \
+python -m ship_hrrp_gen.train \
   --config configs/gan_scalars_serloss.yaml \
   --data data/ship_hrrp.pt \
   --seed 42 \
@@ -34,7 +34,7 @@ Useful flags:
 
 ## Quick sanity check
 ```bash
-python -m icassp.train \
+python -m ship_hrrp_gen.train \
   --config configs/gan_scalars_serloss.yaml \
   --data data/ship_hrrp.pt \
   --seed 0 \
@@ -46,11 +46,11 @@ python -m icassp.train \
 Artifacts (checkpoints, figures, TensorBoard logs) are written under `results/` following the `figure_path` in the config.
 
 ## Layout
-- `src/icassp/`: models (DDPM, GAN), dataset, utils, training script (`train.py`).
+- `src/ship_hrrp_gen/`: models (DDPM, GAN), dataset, utils, training script (`train.py`).
 - `configs/`: all YAML configs.
 - `requirements.txt`: Python deps.
 - `.gitignore`: ignores caches, venvs, and training outputs.
 
 ## Notes
 - Intended for a quick demo run on the 128 generated samples; no multi-GPU setup required.
-- Final metrics rely on `compute_metrics` in `icassp.utils`. If there is no test split (`test_idx` empty), use `--skip-eval`.
+- Final metrics rely on `compute_metrics` in `ship_hrrp_gen.utils`. If there is no test split (`test_idx` empty), use `--skip-eval`.
