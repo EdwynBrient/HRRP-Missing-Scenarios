@@ -3,7 +3,7 @@
 Cleaned-up DDPM / GAN training code for HRRP radar profiles.  
 Executable code lives in `src/icassp`, configs in `configs/`.
 
-<img src="assets/ship_hrrp_banner.png" alt="Generated samples overview" />
+<img src="assets/ship_hrrp.png" alt="Generated samples overview" />
 
 ## Quick requirements
 - Python ≥ 3.9
