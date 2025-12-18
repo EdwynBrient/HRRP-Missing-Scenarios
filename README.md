@@ -1,17 +1,56 @@
-# High-Resolution-Range-Profile-Missing-Scenarios
+# ICASSP HRRP Training
 
-This repository will host a subset of radar and generated data used in our research on conditional generation of High-Resolution Range Profiles (HRRP) for maritime targets. 
+Cleaned-up DDPM / GAN training code for HRRP radar profiles.  
+Executable code lives in `src/icassp`, configs in `configs/`.
 
-**This repository is currently under preparation. Data will be released soon.**
+![Generated samples overview](assets/ship_hrrp.png)
 
-## Overview
+## Quick requirements
+- Python ≥ 3.9
+- PyTorch (CPU or CUDA, matching your GPU if available)
+- The generated demo set (`data/ship_hrrp.pt`) (loaded directly, no CSV needed).
 
-High-Resolution Range Profiles (HRRPs) are 1D radar signatures widely used for radar-based target recognition. Due to the limited availability of labeled radar data, we propose generative models (GANs, DDPMs) conditioned on physical attributes (e.g., ship dimensions, viewing angle) to synthesize realistic HRRP signals.
+## Installation
+```bash
+cd github_repo
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pip install -e .   # installs the icassp package from src/
+```
 
-The dataset to be released will include:
-- Selected real HRRP examples from our measurement campaign  
-- Synthetic HRRPs generated using our conditional models
+## Run a training
+```bash
+python -m icassp.train \
+  --config configs/gan_scalars_serloss.yaml \
+  --data data/ship_hrrp.pt \
+  --seed 42 \
+  --num-workers 0
+```
+Useful flags:
+- `--num-workers`: dataloader workers (set 0 on small CPUs).
+- `--skip-eval`: skip test metrics if no test split.
+- `--fast-dev-run`: quick pipeline sanity-check (1 train/val/test batch).
 
-**License:** To be defined. Intended for academic use only.
+## Quick sanity check
+```bash
+python -m icassp.train \
+  --config configs/gan_scalars_serloss.yaml \
+  --data data/ship_hrrp.pt \
+  --seed 0 \
+  --num-workers 0 \
+  --skip-eval \
+  --fast-dev-run
+```
 
-**Author** Edwyn Brient
+Artifacts (checkpoints, figures, TensorBoard logs) are written under `results/` following the `figure_path` in the config.
+
+## Layout
+- `src/icassp/`: models (DDPM, GAN), dataset, utils, training script (`train.py`).
+- `configs/`: all YAML configs.
+- `requirements.txt`: Python deps.
+- `.gitignore`: ignores caches, venvs, and training outputs.
+
+## Notes
+- Intended for a quick demo run on the 128 generated samples; no multi-GPU setup required.
+- Final metrics rely on `compute_metrics` in `icassp.utils`. If there is no test split (`test_idx` empty), use `--skip-eval`.
