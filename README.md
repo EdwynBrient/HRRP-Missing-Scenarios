@@ -13,3 +13,5 @@ The dataset to be released will include:
 - Synthetic HRRPs generated using our conditional models
 
 **License:** To be defined. Intended for academic use only.
+
+**Author** Edwyn Brient
