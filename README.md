@@ -20,7 +20,7 @@ Using a robust detection of the target’s occupied range bins, the visual targe
 The same analysis applied to **generated HRRP data** shows that the synthesized signals follow the same LOSP-consistent trends and successfully **fill missing aspect-angle scenarios** at a coarse scale. This demonstrates that the generation process preserves the underlying physical and geometric constraints of radar line-of-sight projections, beyond simple signal-level realism.
 
 <figure>
-  <img src="assets/LRP_LOSP.png" alt="LRP LOSP" />
+  <img src="assets/comparison_lrp.png" alt="LRP LOSP" />
   <figcaption>Figure 2 — Correlation between visual <i>Length on Range Profile</i> (LRP) and <i>Line-Of-Sight Projection</i> (LOSP) for measured and generated data. </figcaption>
 </figure>
 
