@@ -1,44 +1,86 @@
-# HRRP Missing Scenarios
+# HRRP Missing Scenarios — Conditional Generation (DDPM / GAN)
 
-DDPM / GAN for High-Resolution-Range-Profile generation, in proceedings at EUSIPCO26.
-Executable code lives in `src/ship_hrrp_gen`, configs in `configs/`.
-<figure>
-  <img src="assets/ship_hrrp.png" alt="Generated samples overview" />
-  <figcaption>Figure 1 — Instance of generated HRRP data from `data/ship_hrrp.pt` </figcaption>
-</figure>
+Code release for our EUSIPCO 2026 paper (to appear): **DDPM / GAN models for High-Resolution Range
+Profile (HRRP) generation** and **missing aspect-angle scenario completion**.
 
-# Top contribution
+- **Package:** `src/ship_hrrp_gen`
+- **Configs:** `configs/`
+- **Demo data:** `data/ship_hrrp.pt` (128 HRRPs, length 512)
 
-## Fundamental conditions
+<p align="center">
+  <img src="assets/ship_hrrp.png" alt="Generated samples overview" width="90%"/>
+  <br/>
+  <em>Figure 1 — Example HRRP samples from <code>data/ship_hrrp.pt</code>.</em>
+</p>
 
-We show that the ship's dimensions and its aspect angle at acquisition are mandatory conditions for generating a ship-specific HRRP. These conditions are interdependent, as shown in the table below.
+---
 
-<figure>
-  <img src="assets/Results_table.png" alt="LRP LOSP" />
-  <figcaption>Table 1 — Generation metrics for different models and conditioning types. The best scores for each model are in bold. </figcaption>
-</figure>
+## Overview
 
-## Generated HRRP follow TLOP
+This repository focuses on **conditional** generative modeling for HRRPs. We study which acquisition
+and target parameters must be provided to the generator in order to:
+1. generate **ship-specific** HRRPs (not just “HRRP-looking” signals), and
+2. **fill missing acquisition scenarios** (especially missing aspect angles) while preserving
+   physically meaningful trends.
 
-Although HRRP data are inherently noisy and difficult to interpret, the theoretical target length observed in a radar HRRP follows a well-defined geometric relationship with the target’s aspect angle. This relationship is described by the Theoretical Length of Object Projection (TLOP)_ model:
+The provided training entrypoint supports both **GAN** and **DDPM** backends (depending on the chosen
+YAML config).
 
-TLOP(L, W, asp) = |L · cos(asp)| + |W · sin(asp)|
+---
 
-where _L_ and _W_ denote the target's true **length** and **width**, and _asp_ is target's **aspect angle** at acquisition time.
+## Key contributions (what to look for)
 
-Using a robust detection of the target’s occupied range bins, the visual target's length called _Length on Range Profile_ (LRP) can be estimated directly from HRRP data. As shown in the accompanying figure, these measured lengths exhibit a clear correlation with the theoretical _TLOP_ curves, confirming that the physical projection geometry is preserved in real radar measurements.
+### 1) Fundamental conditioning variables
 
-The same analysis applied to the **generated HRRP data** shows that the synthesized signals exhibit LOSP-consistent trends and successfully **fill missing aspect-angle scenarios** at a coarse scale. This demonstrates that the generation process preserves the underlying physical and geometric constraints of radar line-of-sight projections, beyond simple signal-level realism.
+We show that **ship dimensions** (length *L*, width *W*) and **aspect angle** (*asp*) are *mandatory*
+to generate ship-specific HRRPs. These conditions are **interdependent** (dimension effects cannot be
+properly modeled without angle, and vice versa), which is reflected in the performance table below.
 
-<figure>
-  <img src="assets/comparison_lenrp.png" alt="LRP LOSP" />
-  <figcaption>Figure 2 — Correlation between visual <i>Length on Range Profile</i> (LRP) and <i>Theoretical Length of Object Projection</i> (TLOP) for measured and generated data. </figcaption>
-</figure>
+<p align="center">
+  <img src="assets/Results_table.png" alt="Metrics table: conditioning ablations" width="95%"/>
+  <br/>
+  <em>Table 1 — Generation metrics for different models and conditioning types. Best scores per model are in bold.</em>
+</p>
 
-## Quick requirements
+### 2) Generated HRRPs follow a geometric projection law (TLOP)
+
+Although HRRPs are noisy and difficult to interpret at the signal level, the **apparent target extent**
+along the range axis follows a simple geometric relationship with the **aspect angle**. We use the
+**Theoretical Length of Object Projection (TLOP)** model:
+
+\[
+\mathrm{TLOP}(L, W, \mathrm{asp}) = |L\cos(\mathrm{asp})| + |W\sin(\mathrm{asp})|
+\]
+
+where:
+- **L** = true ship length (meters),
+- **W** = true ship width (meters),
+- **asp** = aspect angle at acquisition time (radians).
+
+From an HRRP, we estimate the **visual target length** by detecting occupied range bins. This yields a
+measured quantity called **Length on Range Profile (LRP)**. In real data, LRP correlates well with the
+TLOP curves.
+
+Crucially, applying the same analysis to **generated HRRPs** shows that synthesized signals recover
+**TLOP-consistent trends** and can **fill missing aspect-angle scenarios** (at a coarse scale). This
+suggests the generator learns more than local realism: it preserves an underlying physical constraint
+linked to line-of-sight projection geometry.
+
+<p align="center">
+  <img src="assets/comparison_lenrp.png" alt="LRP vs TLOP correlation" width="95%"/>
+  <br/>
+  <em>Figure 2 — Correlation between measured/generated <i>LRP</i> and theoretical <i>TLOP</i> as a function of aspect angle.</em>
+</p>
+
+---
+
+## Requirements
+
 - Python ≥ 3.9
-- PyTorch (CPU or CUDA, matching your GPU if available)
-- The generated demo set (`data/ship_hrrp.pt`).
+- PyTorch (CPU or CUDA)
+- `data/ship_hrrp.pt` (demo dataset shipped with the repo)
+
+---
 
 ## Installation
 ```bash
