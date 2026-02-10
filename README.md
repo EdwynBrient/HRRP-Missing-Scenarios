@@ -1,7 +1,6 @@
 # HRRP Missing Scenarios — Conditional Generation (DDPM / GAN)
 
-Code release for our EUSIPCO 2026 paper (to appear): **DDPM / GAN models for High-Resolution Range
-Profile (HRRP) generation** and **missing aspect-angle scenario completion**.
+Code release for our submission to EUSIPCO 2026 : **Conditional Generative Models for High-Resolution Range Profiles: Capturing Geometry-Driven Trends in a Large-Scale Maritime Dataset**
 
 - **Package:** `src/ship_hrrp_gen`
 - **Configs:** `configs/`
